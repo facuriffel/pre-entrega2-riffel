@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de tareas</title>
+</head>
+<body>
+
+    <h1>Mi lista de tareas</h1>
+    <button onclick="añadirTareaPrompt()">Agregar Tarea</button>
+    <ul id="listaTareas"></ul>
+    
+    <script>
+        // Array para almacenar las tareas
+        let tareas = [];
+
+        // Función para agregar una tarea a la lista mediante un prompt
+        function añadirTareaPrompt() {
+            const nombreTarea = prompt('Ingrese la nueva tarea:');
+            if (nombreTarea) {
+                añadirTarea(nombreTarea);
+            }
+        }
+
+        // Función para agregar una tarea a la lista
+        function añadirTarea(tarea) {
+            tareas.push({ tarea, completed: false });
+            mostrarTareas();
+        }
+
+        // Función para mostrar las tareas en el HTML
+        function mostrarTareas() {
+            const listaTareas = document.getElementById('listaTareas');
+            listaTareas.innerHTML = ''; // Limpiar la lista antes de volver a mostrar
+
+            tareas.forEach((tarea, index) => {
+                const listaItem = document.createElement('li');
+                listaItem.textContent = `${index + 1}. ${tarea.tarea} ${tarea.completed ? '(Completada)' : ''}`;
+                listaTareas.appendChild(listaItem);
+            });
+        }
+
+        // Función para marcar una tarea como completada
+        function tareaCompleta(index) {
+            if (index >= 0 && index < tareas.length) {
+                tareas[index].completed = true;
+                mostrarTareas();
+            }
+        }
+
+        // Función para buscar una tarea por su nombre
+        function searchTask(nombreTarea) {
+            const resultado = tareas.find(tarea => tarea.tarea === nombreTarea);
+            return resultado ? `La tarea "${nombreTarea}" existe en la lista.` : `La tarea "${nombreTarea}" no fue encontrada.`;
+        }
+
+        // Función para filtrar las tareas completadas
+        function filterCompletedTasks() {
+            const completedTasks = tareas.filter(tarea => tarea.completed);
+            return completedTasks.length > 0 ? completedTasks : 'No hay tareas completadas.';
+        }
+
+        // Ejemplo de uso
+        añadirTarea('Hacer ejercicio');
+        añadirTarea('Estudiar JavaScript');
+        añadirTarea('Comprar alimentos');
+
+        tareaCompleta(0);
+
+        console.log(searchTask('Estudiar JavaScript'));
+
+        console.log(filterCompletedTasks());
+    </script>
+
+</body>
+</html>
